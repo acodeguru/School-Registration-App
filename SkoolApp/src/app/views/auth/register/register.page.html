@@ -1,0 +1,48 @@
+<form class="text-center" (ngSubmit)="onSubmit()" [formGroup]="registerForm" name="registerForm">
+  <p class="text-dark">Sign In to your account</p>
+  <ion-list>
+    <ion-item>
+      <ion-label color="primary" position="floating">First Name</ion-label>
+      <ion-input [(ngModel)]="userModel.fname" autocorrect="on" autofocus="on" clearInput="true" clearOnEdit="true"
+        inputmode="text" type="text" placeholder="Enter your first name" name="fname" formControlName="fname"  [ngClass]="{ 'is-invalid': submitted && f.fname.errors }"></ion-input>
+      <ion-icon name="person-outline" class="input-ionic-icon"></ion-icon>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary" position="floating">Last Name</ion-label>
+      <ion-input [(ngModel)]="userModel.lname" autocorrect="on" autofocus="on" clearInput="true" clearOnEdit="true"
+        inputmode="text" type="text" placeholder="Enter your Last Name" name="lname"  formControlName="lname"  [ngClass]="{ 'is-invalid': submitted && f.lname.errors }"></ion-input>
+      <ion-icon name="person-outline" class="input-ionic-icon"></ion-icon>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary" position="floating">Email</ion-label>
+      <ion-input [(ngModel)]="userModel.email" autocorrect="on" autofocus="on" clearInput="true" clearOnEdit="true"
+        inputmode="text" type="email" placeholder="Enter your email" name="email" formControlName="email"  [ngClass]="{ 'is-invalid': submitted && f.email.errors }"></ion-input>
+      <ion-icon name="mail-open-outline" class="input-ionic-icon"></ion-icon>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary" position="floating">Password</ion-label>
+      <ion-input [(ngModel)]="userModel.password" autocorrect="on" autofocus="on" clearInput="true" clearOnEdit="true"
+        inputmode="password" type="password" placeholder="Enter your password" name="password"  formControlName="password" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" ></ion-input>
+      <ion-icon name="key-outline" class="input-ionic-icon"></ion-icon>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary" position="floating">Confirm Password</ion-label>
+      <ion-input autocorrect="on" autofocus="on" clearInput="true" clearOnEdit="true"
+        inputmode="password" type="password" placeholder="Confirm your password" name="confirmPassword" formControlName="confirmPassword" 
+         ></ion-input>
+      <ion-icon name="key-outline" class="input-ionic-icon"></ion-icon>
+    </ion-item>
+  </ion-list>
+  <br>
+  <div class="row">
+    <div class="col-12">
+      <button type="submit" class="text-light col-12 btn btn-info" >Sign Up</button>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-12">
+      <h6>Already have an account? <a  class="text-info" [routerLink]="['/']" >Sign In</a></h6>
+    </div>
+  </div>
+</form>

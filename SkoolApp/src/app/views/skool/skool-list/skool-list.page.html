@@ -1,0 +1,21 @@
+
+
+<ion-list>
+  <ion-item *ngFor="let modelSkool of modelSkoolList;">
+    <ion-avatar slot="start">
+      <img src="assets/icon/logo.png">
+    </ion-avatar>
+    <ion-label>
+      <h2>{{modelSkool.name}} | <ion-badge color="primary">{{modelSkool.nostudents}}</ion-badge></h2>
+      <h3>{{modelSkool.address}}</h3>
+      <h3>{{searchTerm}}</h3>
+      <p><ion-icon name="call-outline"></ion-icon> {{modelSkool.phone}} | <ion-icon name="mail-open-outline"></ion-icon> {{modelSkool.email}} </p>
+    </ion-label>
+  </ion-item>
+</ion-list>
+
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="add" (click)="addSkool()"></ion-icon>
+    </ion-fab-button>
+</ion-fab>

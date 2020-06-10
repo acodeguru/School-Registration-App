@@ -1,0 +1,59 @@
+<div class="app-body">
+  <main class="main d-flex align-items-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 mx-auto">
+          <div class="card-group">
+            <form class="text-center" (ngSubmit)="onSubmit()" [formGroup]="skoolForm" name="skoolForm">
+              <ion-list>
+                <ion-item>
+                  <ion-label color="primary" position="floating">Skool Name</ion-label>
+                  <ion-input [(ngModel)]="skoolModel.name" autocorrect="on" autofocus="on" clearInput="true" clearOnEdit="true" inputmode="text"
+                    type="text" placeholder="Enter name" formControlName="name"
+                    [ngClass]="{ 'is-invalid': submitted && f.name.errors }"></ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-label color="primary" position="floating">Skool Address</ion-label>
+                  <ion-input [(ngModel)]="skoolModel.address" autocorrect="on" autofocus="on" clearInput="true"
+                    clearOnEdit="true" inputmode="text" type="text" placeholder="Enter address"
+                    formControlName="address" [ngClass]="{ 'is-invalid': submitted && f.address.errors }">
+                  </ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-label color="primary" position="floating">Phone</ion-label>
+                  <ion-input [(ngModel)]="skoolModel.phone" autocorrect="on" autofocus="on" clearInput="true"
+                    clearOnEdit="true" inputmode="number" type="number" placeholder="Enter phone"
+                    formControlName="phone" [ngClass]="{ 'is-invalid': submitted && f.phone.errors }">
+                  </ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-label color="primary" position="floating">Email</ion-label>
+                  <ion-input [(ngModel)]="skoolModel.email" autocorrect="on" autofocus="on" clearInput="true"
+                    clearOnEdit="true" inputmode="email" type="email" placeholder="Enter email"
+                    formControlName="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+                  </ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-label color="primary" position="floating">No of Students</ion-label>
+                  <ion-input [(ngModel)]="skoolModel.nostudents" autocorrect="on" autofocus="on" clearInput="true"
+                    clearOnEdit="true" inputmode="number" type="number" placeholder="Enter number of students"
+                    formControlName="nostudents" [ngClass]="{ 'is-invalid': submitted && f.nostudents.errors }">
+                  </ion-input>
+                </ion-item>
+              </ion-list>
+              <br>
+              <div class="row">
+                <div class="col-12">
+                  <button type="submit" class="text-light col-12 btn btn-info">Add Skool</button>
+                </div>
+              </div>
+              <div class="alert alert-danger" role="alert" *ngFor="let error of errorsArray">
+                {{error.message}}
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

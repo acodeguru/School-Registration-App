@@ -1,0 +1,43 @@
+<ion-header [translucent]="true" >
+  <ion-toolbar>
+    <ion-item lines="none" *ngIf="titleService.getTitle() == ''">
+    
+      <ion-searchbar
+        [(ngModel)]="myInput"
+        [showCancelButton]="shouldShowCancel"
+        (ionInput)="onInput($event)"
+        (ionCancel)="onCancel($event)"
+        (ionCancel)="onCancel($event)"
+
+        [formControl]="searchControl"
+        (ionChange)="onSearchInput()"
+      >
+      </ion-searchbar>
+      <div *ngIf="searching" class="spinner-container">
+        <ion-spinner></ion-spinner>
+      </div>
+
+    <ion-chip end  (click)="filterModal()">
+      <ion-icon name="options-outline" color="primary" ></ion-icon>
+    </ion-chip>
+
+    </ion-item>
+    <ion-title>{{titleService.getTitle()}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content  center text-center>
+
+  <router-outlet ></router-outlet>
+  <ion-tabs>
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button tab="/">
+        <ion-label>Schools</ion-label>
+        <ion-icon name="school-outline"></ion-icon>
+      </ion-tab-button>
+      <ion-tab-button (click)="profileModal()">
+        <ion-label>Profile</ion-label>
+        <ion-icon name="person-circle-outline"></ion-icon>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+</ion-content>

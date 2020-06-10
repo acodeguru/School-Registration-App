@@ -1,0 +1,23 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title class="text-center">
+      <img src="assets/icon/logo.png" width="100" />
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<br>
+<ion-content padding  [fullscreen]="true" >
+  <div class="app-body">
+    <main class="main d-flex align-items-center">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8 mx-auto">
+            <div class="card-group">
+              <router-outlet></router-outlet>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</ion-content>
