@@ -1,19 +1,20 @@
-// import dotenv from 'dotenv'
-// dotenv.config();
+import * as dotenv from "dotenv";
+dotenv.config();
 
-import express from 'express';
-import graphql from 'graphql';
+import * as express from 'express';
+import { Request, Response, NextFunction } from 'express';
+import { buildSchema } from 'graphql';
 
-import typeDefs from './graphql/types/index.js';
-import resolvers from './graphql/resolvers/index.js';
-import graphqlHttp from 'express-graphql';
+import typeDefs from './graphql/types/index';
+import resolvers from './graphql/resolvers/index';
+import * as graphqlHttp from 'express-graphql';
 
-import cors from 'cors';
-import log4js from 'log4js';
-import bodyParser from 'body-parser';
-import auth from './middleware/auth.js';
+import * as cors from 'cors';
+import * as log4js from 'log4js';
+import * as bodyParser from 'body-parser';
+import auth from './middleware/auth';
 
-const buildSchema = graphql.buildSchema;
+
 const schemaTypes = buildSchema(typeDefs);
 const app = express();
 
@@ -39,26 +40,26 @@ log4js.configure({
   }
 });
 
-let logger = log4js.getLogger('skoolapp');
+const logger = log4js.getLogger('skoolapp');
 
-app.use(log4js.connectLogger(logger, {
-  level: log4js.levels.ERROR,
-  format: ':method :url'
-}));
-app.use(log4js.connectLogger(logger, {
-  level: log4js.levels.INFO,
-}));
+app.use(log4js.connectLogger(logger, { level: log4js.levels.ERROR.toString(), format: ':method :url' }));
+app.use(log4js.connectLogger(logger, { level: log4js.levels.INFO.toString(), format: ':method :url' }));
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '50mb'})); 
 app.use(cors());
-app.use(auth);
 
-app.use((error, req, res, next) => {
+app.use((error: any, req: Request, res: Response, next: NextFunction) => {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  const status = error.statusCode || 500;
+  const message = error.message;
+  const data = error.data;
+  res.status(status).json({ message: message, data: data });
   next();
 }).on("error", function (error) {
   logger.error(error);
 });
+
+app.use(auth);
 
 app.use(
   '/graphql', 
@@ -81,6 +82,5 @@ app.use(
         },
     };
 }));
-
 
 app.listen(8080);

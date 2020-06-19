@@ -1,51 +1,47 @@
-import Role from '../../models/role.js';
-import uuidObj from 'uuid';
-const {v4: uuidv4} = uuidObj;
+import { 
+  Role, User
+} from '../../models'
+
+import { v4 as uuidv4 } from 'uuid';
 
 export default {
 
     role: async ({uuid}, context, info) => {
-      if (!context.isAuth) {
-        const error = new Error('Not authenticated!');
-        error.code = 401;
-        throw error;
-      }
       try {
         return await Role.findOne({
+          include: [{
+            model: User, 
+          }],
           where: {
             uuid: uuid,
           }
         });
       } catch (e) {
-        const error = new Error(e);
+        const error = new Error(e) as any;
         error.code = 400;
         throw error;
       }
     },
 
-    roles: async (parent, context, info) => {
-      if (!context.isAuth) {
-        const error = new Error('Not authenticated!');
-        error.code = 401;
-        throw error;
-      }
+    roles: async (parent, args, context, info) => {
       try {
-          return await Role.findAll()
+          return await Role.findAll({
+            include: [{
+              model: User,
+            }],
+          })
       } catch (e) {
-          const error = new Error(e);
+          const error = new Error(e) as any;
           error.code = 400;
           throw error;
       }
   },
 
   createRole: async ({roleInput}, context, info) => {
-    if (!context.isAuth) {
-      const error = new Error('Not authenticated!');
-      error.code = 401;
-      throw error;
-    }
+    
     try {
       const existingRole = await Role.findOne({
+
         where: {
           name: roleInput.name,
         }
@@ -68,7 +64,7 @@ export default {
         }
       });
     } catch (e) {
-      const error = new Error(e);
+      const error = new Error(e) as any;
       error.code = 400;
       throw error;
     }

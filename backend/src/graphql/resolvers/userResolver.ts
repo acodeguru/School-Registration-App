@@ -1,23 +1,16 @@
-import Role from '../../models/role.js'
-import User from '../../models/user.js'
+import { Role, User } from '../../models'
+import { v4 as uuidv4 } from 'uuid';
+// const {v4: uuidv4} = uuidObj;
 
-import uuidObj from 'uuid';
-const {v4: uuidv4} = uuidObj;
-
-import bcrypt from 'bcryptjs';
+import * as bcrypt from 'bcryptjs';
 import validator from 'validator';
-import jwt from 'jsonwebtoken';
+import { sign } from 'jsonwebtoken';
 
 export default {
 
     user: async ({
       uuid
     }, context, info) => {
-      if (!context.isAuth) {
-        const error = new Error('Not authenticated!');
-        error.code = 401;
-        throw error;
-      }
       try {
         return await User.findOne({
           where: {
@@ -28,17 +21,12 @@ export default {
           }]
         });
       } catch (e) {
-        const error = new Error(e);
+        const error = new Error(e) as any;
         error.code = 400;
         throw error;
       }
     },
-    users: async (parent, context, info) => {
-      if (!context.isAuth) {
-        const error = new Error('Not authenticated!');
-        error.code = 401;
-        throw error;
-      }
+    users: async (parent, args, context, info) => {
       try {
         return await User.findAll({
           include: [{
@@ -46,16 +34,15 @@ export default {
           }]
         })
       } catch (e) {
-        const error = new Error(e);
+        const error = new Error(e) as any;
         error.code = 400;
         throw error;
       }
     },
-
     login: async ({email, password}, context, info) => {
       const user = await User.findOne({
         where: {
-          username: email,
+          email: email,
           status : 1
         },
         include: [{
@@ -64,35 +51,36 @@ export default {
       });
   
       if (!user) {
-        const error = new Error('Password or email is incorrect.');
+        const error = new Error('User not found.') as any;
         error.code = 401;
         throw error;
       }
   
-      const isEqual = await bcrypt.compare(password, user.password);
+      const isEqual = bcrypt.compare(password, user.password);
       if (!isEqual) {
-        const error = new Error('Password or email is incorrect.');
+        const error = new Error('Password is incorrect.') as any;
         error.code = 401;
         throw error;
       }
-      const token = jwt.sign({
+      const token = sign({
           userId: user.uuid,
           email: user.email
         },
-        'SA4xvrB^V9nw@`rZvh]%QAp]Mq=G.r_H-nSrHF', {
-          expiresIn: '2h'
+        'SVP@5T5Y:mT#C>G53YKH5gY&.K3=*RFjRzTjz5x:', {
+          expiresIn: '10h'
         }
       );
       return {
         token: token,
-        userUUID: user.uuid
+        userId: user.uuid,
+        role: user.role.name
       };
     },
 
     createUser: async ({
       userInput
     }, context, info) => {
-      console.log(userInput);
+
       try {
         const errors = [];
         if (!validator.isEmail(userInput.email)) {
@@ -111,7 +99,7 @@ export default {
           });
         }
         if (errors.length > 0) {
-          const error = new Error('Invalid input.');
+          const error = new Error('Invalid input.') as any;
           error.data = errors;
           error.code = 422;
           throw error;
@@ -119,12 +107,12 @@ export default {
   
         const existingUser = await User.findOne({
           where: {
-            username: userInput.email,
+            email: userInput.email,
           }
         });
   
         if (existingUser) {
-          const error = new Error('User exists already!');
+          const error = new Error('User exists already!') as any;
           error.code = 400;
           throw error;
         }
@@ -136,13 +124,13 @@ export default {
         });
   
         if (!existingRole) {
-          const error = new Error("Role not exists!");
+          const error = new Error("Role not exists!") as any;
           error.code = 400;
           throw error;
         }
   
         const hashedPw = await bcrypt.hash(userInput.password, 12);
-  
+        console.log(hashedPw)
         const user = new User({
           fname: userInput.fname,
           lname: userInput.lname,
@@ -158,11 +146,11 @@ export default {
   
         return await User.findOne({
           where: {
-            username: userInput.email,
+            email: userInput.email,
           }
         });
       } catch (e) {
-        const error = new Error(e);
+        const error = new Error(e) as any;
         error.code = 400;
         throw error;
       }

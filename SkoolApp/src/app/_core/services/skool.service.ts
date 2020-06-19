@@ -34,6 +34,7 @@ const ADD_INSTITUTION_MUTATION = gql`mutation createInstitution($details:Institu
 export class SkoolService {
 
   private searchTerm = new Subject<any>();
+  private skoolListChanged = new Subject<Skool[]>();
   modelSkoolList: Skool[] = [];
 
   sortBy: string = "name"
@@ -57,6 +58,11 @@ export class SkoolService {
   getModelSkoolList(){
     return this.modelSkoolList
   }
+
+  setSkoolListChange(skoolList:Skool[]){
+    this.skoolListChanged.next(skoolList);
+  }
+
   // Create new institution
   createInstitution(institution: Partial<Skool>) {
     return this.apollo.mutate({
