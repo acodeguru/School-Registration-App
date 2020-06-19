@@ -1,22 +1,18 @@
-import Institution from '../../models/institution.js'
-import User from '../../models/user.js'
 
-import uuidObj from 'uuid';
-
+import { Institution,User } from '../../models'
+import { v4 as uuidv4 } from 'uuid';
 import validator from 'validator';
-import Sequelize from 'sequelize';
+import { Op } from 'sequelize';
 
-const Op = Sequelize.Op;
-const {v4: uuidv4} = uuidObj;
 
 export default {
     // fetch single tuple from the table
     // @uuid
     institution: async ({
       uuid
-    }, context, info) => {
-      if (!context.isAuth) {
-        const error = new Error('Not authenticated!');
+    }, req) => {
+      if (!req.isAuth) {
+        const error = new Error('Not authenticated!') as any;
         error.code = 401;
         throw error;
       }
@@ -30,7 +26,7 @@ export default {
           }]
         });
       } catch (e) {
-        const error = new Error(e);
+        const error = new Error(e) as any;
         error.code = 400;
         throw error;
       }
@@ -39,14 +35,14 @@ export default {
     // fetch multiple tuples from the table
     institutions: async (args, context, info) => {
       if (!context.isAuth) {
-        const error = new Error('Not authenticated!');
+        const error = new Error('Not authenticated!') as any;
         error.code = 401;
         throw error;
       }
       try {
         return await Institution.findAll();
       } catch (e) {
-        const error = new Error(e);
+        const error = new Error(e) as any;
         error.code = 400;
         throw error;
       }
@@ -57,7 +53,7 @@ export default {
       institutionInput
     }, context, info) => {
       if (!context.isAuth) {
-        const error = new Error('Not authenticated!');
+        const error = new Error('Not authenticated!') as any;
         error.code = 401;
         throw error;
       }
@@ -78,7 +74,7 @@ export default {
         });
   
         if (existingInstitution) {
-          const error = new Error("Institution exists!");
+          const error = new Error("Institution exists!") as any;
           error.code = 400;
           throw error;
         }
@@ -100,7 +96,7 @@ export default {
           }
         });
       } catch (e) {
-        const error = new Error(e);
+        const error = new Error(e) as any;
         error.code = 400;
         throw error;
       }

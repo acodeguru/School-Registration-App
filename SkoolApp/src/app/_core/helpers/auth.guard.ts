@@ -1,50 +1,34 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, RouterStateSnapshot, CanActivate, Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { CanLoad, Route, UrlSegment, Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { take, tap, switchMap } from 'rxjs/operators';
 
-/**
- * Decides if a route can be activated depending on the role of the current user
- * Attach the route guard to a route in the route config
- */
+import { AuthService } from './../services/auth.service';
+
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
+export class AuthGuard implements CanLoad {
+  constructor(private authService: AuthService, private router: Router) {}
 
-  constructor(
-    public authService: AuthService,
-    public router: Router
-  ) { }
-
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-
-    const local_storage_token = localStorage.getItem('skool_user');
-    const currentUser = local_storage_token ? JSON.parse(local_storage_token) : null;
-
-    if (currentUser) {
-
-      // const payload = this.extractPayloadFromToken(currentUser.login.token);
-
-      // // check if route is restricted by role and if it matches the current user's role
-      // if (route.data.roles && route.data.roles.indexOf(payload.role) === -1) {
-      //   // role not authorised so redirect to login
-      //   this.router.navigate(['/401']);
-      //   return false;
-      // }
-
-      // role matches the role specified on the route, therefore authorised
-      return true;
-    }
-
-    // not logged in so redirect to login page with the return url
-    this.router.navigate(['/'], { queryParams: { returnUrl: state.url } });
-    return false;
+  canLoad(
+    route: Route,
+    segments: UrlSegment[]
+  ): Observable<boolean> | Promise<boolean> | boolean {
+    return this.authService.userIsAuthenticated.pipe(
+      take(1),
+      switchMap(isAuthenticated => {
+        if (!isAuthenticated) {
+          return this.authService.autoLogin();
+        } else {
+          return of(isAuthenticated);
+        }
+      }),
+      tap(isAuthenticated => {
+        if (!isAuthenticated) {
+          this.router.navigateByUrl('/');
+        }
+      })
+    );
   }
-
-  private extractPayloadFromToken(token: String) {
-    const payload = JSON.parse(window.atob(token.split('.')[1]));
-    console.log('payload', payload);
-    return payload;
-  }
-
 }
