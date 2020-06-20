@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Backpack</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="login-logo">
+    <img src="assets/icon/logo.png">
+  </div>
+
+  <form class="text-center" (ngSubmit)="onLogin()" [formGroup]="loginForm" name="loginForm" novalidate>
+    <p class="text-dark">Sign In to your account</p>
+    <ion-list>
+      <ion-item>
+        <ion-label color="primary" position="floating">Email</ion-label>
+        <ion-input [(ngModel)]="login.email" autocorrect="on" autofocus="on" clearInput="true" clearOnEdit="true"
+          inputmode="text" type="email" placeholder="Enter your email" formControlName="email"
+          [ngClass]="{ 'is-invalid': submitted && f.email.errors }"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label color="primary" position="floating">Password</ion-label>
+        <ion-input [(ngModel)]="login.password" autocorrect="on" autofocus="on" clearInput="true" clearOnEdit="true"
+          inputmode="password" type="password" placeholder="Enter your password" formControlName="password"
+          [ngClass]="{ 'is-invalid': submitted && f.password.errors }"></ion-input>
+      </ion-item>
+    </ion-list>
+    <br>
+    <div class="row">
+      <div class="col-12">
+        <button type="submit" class="text-light col-12 btn btn-info">Sign In</button>
+      </div>
+      <br><br>
+      
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-12">
+        <a class="text-info px-0">Forgot password?</a>
+      </div>
+      <div class="col-12">
+        <h6>Don`t have an account? <a type="button" (click)="onSignup()">Sign Up</a></h6>
+      </div>
+    </div>
+
+  </form>
+
+</ion-content>

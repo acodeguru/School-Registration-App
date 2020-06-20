@@ -11,11 +11,11 @@ export default {
     institution: async ({
       uuid
     }, req) => {
-      if (!req.isAuth) {
-        const error = new Error('Not authenticated!') as any;
-        error.code = 401;
-        throw error;
-      }
+      // if (!req.isAuth) {
+      //   const error = new Error('Not authenticated!') as any;
+      //   error.code = 401;
+      //   throw error;
+      // }
       try {
         return await Institution.findOne({
           where: {
@@ -34,11 +34,11 @@ export default {
 
     // fetch multiple tuples from the table
     institutions: async (args, context, info) => {
-      if (!context.isAuth) {
-        const error = new Error('Not authenticated!') as any;
-        error.code = 401;
-        throw error;
-      }
+      // if (!context.isAuth) {
+      //   const error = new Error('Not authenticated!') as any;
+      //   error.code = 401;
+      //   throw error;
+      // }
       try {
         return await Institution.findAll();
       } catch (e) {
@@ -52,11 +52,11 @@ export default {
     createInstitution: async ({
       institutionInput
     }, context, info) => {
-      if (!context.isAuth) {
-        const error = new Error('Not authenticated!') as any;
-        error.code = 401;
-        throw error;
-      }
+      // if (!context.isAuth) {
+      //   const error = new Error('Not authenticated!') as any;
+      //   error.code = 401;
+      //   throw error;
+      // }
 
       try {
         const errors = [];

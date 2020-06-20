@@ -1,0 +1,33 @@
+<ion-header translucent="true">
+  <ion-toolbar>
+    <ion-title>Filter School</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content >
+
+  <ion-list >
+    <ion-radio-group ngDefaultControl  (ionChange)="radioGroupChangeFilterBy($event)" name="filterBy" [value]="filterBy"> 
+      <ion-list-header>Filter Skools by</ion-list-header>
+      <ion-item>
+        <ion-label>School Name</ion-label>
+        <ion-radio color="primary" value="name" slot="start" [checked]="name"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>School Address</ion-label>
+        <ion-radio color="primary" value="address" slot="start"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+ </ion-list>
+ <ion-list >
+    <ion-radio-group  ngDefaultControl  (ionChange)="radioGroupChangeSortBy($event)" name="sortBy" [value]="sortBy">
+      <ion-list-header>Sort Skools By</ion-list-header>
+      <ion-item>
+        <ion-label>School Name</ion-label>
+        <ion-radio color="primary" value="name" slot="start" [checked]="name"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+</ion-list>
+</ion-content>

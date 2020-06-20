@@ -2,7 +2,6 @@ export default `
   type AuthData {
     token: String!
     userUUID: String!
-    role: String!
   }
 
   type User {

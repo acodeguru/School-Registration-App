@@ -25,11 +25,11 @@ log4js.configure({
     },
     file: {
       type: 'file',
-      filename: 'skoolapp.log'
+      filename: 'backpackapp.log'
     }
   },
   categories: {
-    skoolapp: {
+    backpackapp: {
       appenders: ['file'],
       level: 'error'
     },
@@ -40,7 +40,7 @@ log4js.configure({
   }
 });
 
-const logger = log4js.getLogger('skoolapp');
+const logger = log4js.getLogger('backpackapp');
 
 app.use(log4js.connectLogger(logger, { level: log4js.levels.ERROR.toString(), format: ':method :url' }));
 app.use(log4js.connectLogger(logger, { level: log4js.levels.INFO.toString(), format: ':method :url' }));

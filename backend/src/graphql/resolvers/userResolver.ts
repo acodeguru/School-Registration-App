@@ -40,6 +40,7 @@ export default {
       }
     },
     login: async ({email, password}, context, info) => {
+
       const user = await User.findOne({
         where: {
           email: email,
@@ -49,7 +50,7 @@ export default {
           model: Role
         }]
       });
-  
+
       if (!user) {
         const error = new Error('User not found.') as any;
         error.code = 401;
@@ -62,6 +63,7 @@ export default {
         error.code = 401;
         throw error;
       }
+
       const token = sign({
           userId: user.uuid,
           email: user.email
@@ -70,9 +72,11 @@ export default {
           expiresIn: '10h'
         }
       );
+
+
       return {
         token: token,
-        userId: user.uuid,
+        userUUID: user.uuid,
         role: user.role.name
       };
     },
@@ -137,7 +141,7 @@ export default {
           email: userInput.email,
           username: userInput.email,
           password: hashedPw,
-          role_uuid: existingRole.uuid,
+          roleUUID: existingRole.uuid,
           uuid: uuidv4(),
           status : 1
         });
