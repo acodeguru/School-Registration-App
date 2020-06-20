@@ -8,9 +8,10 @@ interface IUser extends Model {
   fname: any;
   lname: any;
   email: any;
+  username:any;
   password: any;
   status: any;
-  role_uuid: any;
+  roleUUID: any;
 }
 
 // Need to declare the static model so `findOne` etc. use correct types.
@@ -42,6 +43,5 @@ const User = <IUserStatic>sequelize.define('user', {
   updatedAt:  DataTypes.STRING
 });
 
-User.belongsTo(Role, {foreignKey: 'role_uuid', targetKey: 'uuid'});
 
 export default User;
